@@ -28,7 +28,7 @@ import lombok.extern.log4j.Log4j2;
 @Controller
 @RequestMapping("/api/entity")
 @Log4j2
-public class AppApi {
+public class AppAPI {
 
 	@Autowired
 	@Setter
