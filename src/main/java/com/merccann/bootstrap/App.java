@@ -18,7 +18,9 @@ import org.springframework.context.annotation.Primary;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.merccann.dao.AppDao;
+import com.merccann.dao.VisitorDao;
 import com.merccann.logic.AppLogic;
+import com.merccann.logic.VisitorVerificationLogic;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -54,6 +56,16 @@ public class App {
 	@Bean
 	public AppLogic createLogic() {
 		return new AppLogic();
+	}
+	
+	@Bean
+	public VisitorVerificationLogic createVisitorLogic() {
+		return new VisitorVerificationLogic();
+	}
+	
+	@Bean
+	public VisitorDao createVisitorDao() {
+		return new VisitorDao();
 	}
 	
 	@Bean
