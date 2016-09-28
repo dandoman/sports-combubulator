@@ -59,8 +59,8 @@ public class MatchLogic {
 					awayWinPredicitons = entry.getValue().size();
 				}
 			}
-			double [] homeScoreArray = predictions.stream().map(x -> x.getHomeTeamScore()).filter(x -> x == null).map(x -> x * 1.0).mapToDouble(Double::doubleValue).toArray();
-			double [] visitorScoreArray = predictions.stream().map(x -> x.getVisitorTeamScore()).filter(x -> x == null).map(x -> x * 1.0).mapToDouble(Double::doubleValue).toArray();
+			double [] homeScoreArray = predictions.stream().map(x -> x.getHomeTeamScore()).filter(x -> x != null).map(x -> x * 1.0).mapToDouble(Double::doubleValue).toArray();
+			double [] visitorScoreArray = predictions.stream().map(x -> x.getVisitorTeamScore()).filter(x -> x != null).map(x -> x * 1.0).mapToDouble(Double::doubleValue).toArray();
 			Percentile percentile = new Percentile();
 			double homeScoreMedian = percentile.evaluate(homeScoreArray, 50);
 			double visitorScoreMedian = percentile.evaluate(visitorScoreArray, 50);
