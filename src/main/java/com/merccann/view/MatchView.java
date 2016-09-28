@@ -1,8 +1,5 @@
 package com.merccann.view;
 
-import java.util.Date;
-
-import com.merccann.League;
 import com.merccann.dto.MatchAndPredictionDTO;
 import com.merccann.dto.MatchDTO;
 
@@ -14,8 +11,12 @@ public class MatchView {
 	private String predictedWinnerId;
 	private String predictedHomeScore;
 	private String predictedVisitorScore;
+	private long predictedHomeWins;
+	private long predictedAwayWins;
+	private long medianHomeScore;
+	private long medianAwayScore;
 	
-	public static MatchView fromMatchAndPredictionDTO(MatchAndPredictionDTO dto) {
+	public static MatchView fromMatchAndPredictionDTO(MatchAndPredictionDTO dto, long homeScoreMedian, long visitorScoreMedian, int homeWinPredicitons, int awayWinPredictions) {
 		MatchView view = new MatchView();
 		MatchDTO matchDTO = new MatchDTO();
 		
@@ -31,6 +32,10 @@ public class MatchView {
 		view.setPredictedHomeScore(dto.getPredictedHomeScore());
 		view.setPredictedVisitorScore(dto.getPredictedVisitorScore());
 		view.setPredictedWinnerId(dto.getPredictedWinnerId());
+		view.setMedianAwayScore(visitorScoreMedian);
+		view.setMedianHomeScore(homeScoreMedian);
+		view.setPredictedAwayWins(awayWinPredictions);
+		view.setPredictedHomeWins(homeWinPredicitons);
 		return view;
 	}
 }
