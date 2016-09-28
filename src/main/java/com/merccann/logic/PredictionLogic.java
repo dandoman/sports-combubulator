@@ -37,6 +37,7 @@ public class PredictionLogic {
 		
 		if(homeTeamScore == null && visitorTeamScore == null) {
 			predictionDao.createPrediction(visitorId, matchId, victoriousTeamId, visitorTeamScore, homeTeamScore);
+			return;
 		}
 		
 		if(homeTeamScore != null && visitorTeamScore != null) {
@@ -44,6 +45,7 @@ public class PredictionLogic {
 				throw new BadArgsException("Visitor and home team scores must be positive integers");
 			}
 			predictionDao.createPrediction(visitorId, matchId, victoriousTeamId, visitorTeamScore, homeTeamScore);
+			return;
 		}
 		
 		throw new BadArgsException("One of visitor or home team score was undefined");
