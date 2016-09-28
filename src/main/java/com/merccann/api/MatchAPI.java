@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,6 +50,7 @@ public class MatchAPI {
 	@ApiOperation(value = "getMatches")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
+	@Transactional
 	public List<MatchView> getMatches(@RequestParam(value = "startDate", required = false) Date startDate,
 			@RequestParam(value = "endDate", required = false) Date endDate,
 			@RequestParam(value = "league", required = true) League league, HttpServletRequest request,
@@ -60,6 +62,7 @@ public class MatchAPI {
 	@ApiOperation(value = "createPrediction")
 	@RequestMapping(value = "/prediction", method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public void createPrediction(@RequestBody CreatePredictionRequest r, HttpServletRequest request,
 			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
 		VisitorDTO visitor = resolveVisitorAndSetCookie(request, response, visitorId);
