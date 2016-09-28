@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.merccann.dao.VisitorDao;
-import com.merccann.entity.VisitorEntity;
+import com.merccann.dto.VisitorDTO;
 
 import lombok.Setter;
 
@@ -21,8 +21,8 @@ public class VisitorVerificationLogic {
 	 * @param resolvedIpAddress never null
 	 * @param visitorId may be null
 	 */
-	public VisitorEntity resolveVisitor(String resolvedIpAddress, String visitorId) {
-		VisitorEntity visitorByIpAddress = visitorDao.getVisitorByIpAddress(resolvedIpAddress);
+	public VisitorDTO resolveVisitor(String resolvedIpAddress, String visitorId) {
+		VisitorDTO visitorByIpAddress = visitorDao.getVisitorByIpAddress(resolvedIpAddress);
 		if (StringUtils.isEmpty(visitorId) && visitorByIpAddress == null) {
 			return visitorDao.createNewVisitor(UUID.randomUUID().toString(), resolvedIpAddress);
 		}
@@ -30,7 +30,7 @@ public class VisitorVerificationLogic {
 			return visitorByIpAddress;
 		}
 
-		VisitorEntity visitorById = visitorDao.getVisitorById(visitorId);
+		VisitorDTO visitorById = visitorDao.getVisitorById(visitorId);
 		if(visitorById == null && visitorByIpAddress == null) {
 			//For whatever reason, visitorId cookie gave us a value we have never seen
 			return visitorDao.createNewVisitor(UUID.randomUUID().toString(), resolvedIpAddress);

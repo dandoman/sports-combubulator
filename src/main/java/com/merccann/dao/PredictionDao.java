@@ -2,15 +2,15 @@ package com.merccann.dao;
 
 import java.util.List;
 
-import com.merccann.entity.PredictionEntity;
+import com.merccann.dto.PredictionDTO;
 
-public class PredictionDao {
+public class PredictionDao extends Dao {
 
 	public void createPrediction(String visitorId, String matchId, String victoriousTeamId, Integer visitorScore, Integer homeScore) {
 		
 	}
 	
-	public List<PredictionEntity> getPredicitonsForMatch(String matchId) {
+	public List<PredictionDTO> getPredicitonsForMatch(String matchId) {
 		return null;
 	}
 }

@@ -1,9 +1,9 @@
-package com.merccann.entity;
+package com.merccann.dto;
 
 import lombok.Data;
 
 @Data
-public class VisitorEntity {
+public class VisitorDTO {
 	private String id;
 	private String ipAddress;
 }

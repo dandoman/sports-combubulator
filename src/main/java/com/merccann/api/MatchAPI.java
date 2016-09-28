@@ -1,6 +1,5 @@
 package com.merccann.api;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,19 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.merccann.League;
-import com.merccann.dao.AppDao;
-import com.merccann.entity.VisitorEntity;
+import com.merccann.dto.VisitorDTO;
+import com.merccann.logic.MatchLogic;
+import com.merccann.logic.PredictionLogic;
 import com.merccann.logic.VisitorVerificationLogic;
 import com.merccann.request.CreatePredictionRequest;
 import com.merccann.view.MatchView;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.Setter;
-import lombok.extern.log4j.Log4j2;
 
 @Controller
 @RequestMapping("/api/match")
-@Log4j2
 public class MatchAPI {
 
 	private static final int COOKIE_MAX_AGE_SECONDS = 250 * 24 * 60 * 60;
@@ -40,13 +38,23 @@ public class MatchAPI {
 	@Setter
 	private VisitorVerificationLogic visitorVerificationLogic;
 
+	@Autowired
+	@Setter
+	private PredictionLogic predicitonLogic;
+	
+	@Autowired
+	@Setter
+	private MatchLogic matchLogic;
+
 	@ApiOperation(value = "getMatches")
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public List<MatchView> getMatches(@RequestParam(value = "startDate", required = false) Date startDate,
 			@RequestParam(value = "endDate", required = false) Date endDate,
-			@RequestParam(value = "league", required = true) League league) {
-		return new ArrayList<>();
+			@RequestParam(value = "league", required = true) League league, HttpServletRequest request,
+			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
+		VisitorDTO visitor = resolveVisitorAndSetCookie(request, response, visitorId); //This may be problematic long run due to so many db reads. WIll probably need to eventually set up redis and read from there
+		return matchLogic.getMatches(startDate, endDate, league, visitor.getId());
 	}
 
 	@ApiOperation(value = "createPrediction")
@@ -54,6 +62,12 @@ public class MatchAPI {
 	@ResponseBody
 	public void createPrediction(@RequestBody CreatePredictionRequest r, HttpServletRequest request,
 			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
+		VisitorDTO visitor = resolveVisitorAndSetCookie(request, response, visitorId);
+		predicitonLogic.createPrediciton(r.getMatchId(), r.getVictoriousTeamId(), r.getHomeTeamScore(), r.getVisitorTeamScore(), visitor.getId());
+	}
+
+	private VisitorDTO resolveVisitorAndSetCookie(HttpServletRequest request, HttpServletResponse response,
+			String visitorIdCookieValue) {
 		String forwardedIpAddress = request.getHeader("X-FORWARDED-FOR");
 		String ipAddress = request.getRemoteAddr();
 		if (StringUtils.isEmpty(forwardedIpAddress) && StringUtils.isEmpty(ipAddress)) {
@@ -61,10 +75,11 @@ public class MatchAPI {
 		}
 
 		String resolvedIpAddress = StringUtils.isEmpty(forwardedIpAddress) ? ipAddress : forwardedIpAddress;
-		VisitorEntity visitor = visitorVerificationLogic.resolveVisitor(resolvedIpAddress, visitorId);
+		VisitorDTO visitor = visitorVerificationLogic.resolveVisitor(resolvedIpAddress, visitorIdCookieValue);
 		Cookie cookie = new Cookie("visitor-id", visitor.getId());
 		cookie.setPath("/");
 		cookie.setMaxAge(COOKIE_MAX_AGE_SECONDS);
 		response.addCookie(cookie);
+		return visitor;
 	}
 }

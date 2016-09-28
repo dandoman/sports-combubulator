@@ -1,4 +1,4 @@
-package com.merccann.entity;
+package com.merccann.dto;
 
 import java.sql.Date;
 
@@ -7,7 +7,7 @@ import com.merccann.League;
 import lombok.Data;
 
 @Data
-public class MatchEntity {
+public class MatchDTO {
 	private String matchId;
 	private String visitorTeamId;
 	private League league;

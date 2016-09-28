@@ -17,9 +17,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.merccann.dao.AppDao;
+import com.merccann.dao.MatchDao;
+import com.merccann.dao.PredictionDao;
 import com.merccann.dao.VisitorDao;
-import com.merccann.logic.AppLogic;
+import com.merccann.logic.MatchLogic;
+import com.merccann.logic.PredictionLogic;
 import com.merccann.logic.VisitorVerificationLogic;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -48,15 +50,8 @@ public class App {
 		};
 	}
 
-	@Bean
-	public AppDao createDao() {
-		return new AppDao();
-	}
-
-	@Bean
-	public AppLogic createLogic() {
-		return new AppLogic();
-	}
+	/* Can all these injectable dependencies be declared some other way? I bet the @Component annotation works somehow.. */
+	/* LOGICS */
 	
 	@Bean
 	public VisitorVerificationLogic createVisitorLogic() {
@@ -64,8 +59,29 @@ public class App {
 	}
 	
 	@Bean
+	public PredictionLogic createPredictionLogic() {
+		return new PredictionLogic();
+	}
+	
+	@Bean
+	public MatchLogic createMatchLogic() {
+		return new MatchLogic();
+	}
+	
+	/* DAOS */
+	@Bean
 	public VisitorDao createVisitorDao() {
 		return new VisitorDao();
+	}
+	
+	@Bean
+	public MatchDao createMatchDao() {
+		return new MatchDao();
+	}
+	
+	@Bean
+	public PredictionDao createPredictionDao() {
+		return new PredictionDao();
 	}
 	
 	@Bean
