@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -51,8 +53,8 @@ public class MatchAPI {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@Transactional
-	public List<MatchView> getMatches(@RequestParam(value = "startDate", required = false) Date startDate,
-			@RequestParam(value = "endDate", required = false) Date endDate,
+	public List<MatchView> getMatches(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso=ISO.DATE) Date startDate,
+			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso=ISO.DATE) Date endDate,
 			@RequestParam(value = "league", required = true) League league, HttpServletRequest request,
 			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
 		VisitorDTO visitor = resolveVisitorAndSetCookie(request, response, visitorId); //This may be problematic long run due to so many db reads. WIll probably need to eventually set up redis and read from there
