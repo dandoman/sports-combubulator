@@ -2,6 +2,9 @@ package com.merccann.exception;
 
 import lombok.extern.log4j.Log4j2;
 
+import org.postgresql.util.PSQLException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.NonTransientDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,5 +61,19 @@ public class TopLevelHandler extends ResponseEntityExceptionHandler {
 
 		return handleExceptionInternal(e, error, headers,
 				HttpStatus.NOT_FOUND, request);
+	}
+	
+	@ExceptionHandler({ NonTransientDataAccessException.class })
+	protected ResponseEntity<Object> catchPGSQLException(NonTransientDataAccessException e,
+			WebRequest request) {
+		log.error(e);
+		ErrorResource error = new ErrorResource();
+		error.setMessage("Inconsistent data error");
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.APPLICATION_JSON);
+
+		return handleExceptionInternal(e, error, headers,
+				HttpStatus.CONFLICT, request);
 	}
 }
