@@ -2,6 +2,10 @@ package com.merccann.logic;
 
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
@@ -43,6 +47,23 @@ public class VisitorVerificationLogic {
 		} else {
 			return visitorById;
 		}
+	}
+	
+	public VisitorDTO resolveVisitorAndSetCookie(HttpServletRequest request, HttpServletResponse response,
+			String visitorIdCookieValue, int cookieMaxAge) {
+		String forwardedIpAddress = request.getHeader("X-FORWARDED-FOR");
+		String ipAddress = request.getRemoteAddr();
+		if (StringUtils.isEmpty(forwardedIpAddress) && StringUtils.isEmpty(ipAddress)) {
+			throw new RuntimeException("Can't extract IP address from request");
+		}
+
+		String resolvedIpAddress = StringUtils.isEmpty(forwardedIpAddress) ? ipAddress : forwardedIpAddress;
+		VisitorDTO visitor = resolveVisitor(resolvedIpAddress, visitorIdCookieValue);
+		Cookie cookie = new Cookie("visitor-id", visitor.getId());
+		cookie.setPath("/");
+		cookie.setMaxAge(cookieMaxAge);
+		response.addCookie(cookie);
+		return visitor;
 	}
 
 }

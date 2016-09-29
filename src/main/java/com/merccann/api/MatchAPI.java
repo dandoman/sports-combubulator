@@ -57,7 +57,7 @@ public class MatchAPI {
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso=ISO.DATE) Date endDate,
 			@RequestParam(value = "league", required = true) League league, HttpServletRequest request,
 			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
-		VisitorDTO visitor = resolveVisitorAndSetCookie(request, response, visitorId); //This may be problematic long run due to so many db reads. WIll probably need to eventually set up redis and read from there
+		VisitorDTO visitor = visitorVerificationLogic.resolveVisitorAndSetCookie(request, response, visitorId, COOKIE_MAX_AGE_SECONDS); //This may be problematic long run due to so many db reads. WIll probably need to eventually set up redis and read from there
 		return matchLogic.getMatches(startDate, endDate, league, visitor.getId());
 	}
 
@@ -67,24 +67,9 @@ public class MatchAPI {
 	@Transactional
 	public void createPrediction(@RequestBody CreatePredictionRequest r, HttpServletRequest request,
 			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
-		VisitorDTO visitor = resolveVisitorAndSetCookie(request, response, visitorId);
+		VisitorDTO visitor = visitorVerificationLogic.resolveVisitorAndSetCookie(request, response, visitorId, COOKIE_MAX_AGE_SECONDS);
 		predicitonLogic.createPrediciton(r.getMatchId(), r.getVictoriousTeamId(), r.getHomeTeamScore(), r.getVisitorTeamScore(), visitor.getId());
 	}
 
-	private VisitorDTO resolveVisitorAndSetCookie(HttpServletRequest request, HttpServletResponse response,
-			String visitorIdCookieValue) {
-		String forwardedIpAddress = request.getHeader("X-FORWARDED-FOR");
-		String ipAddress = request.getRemoteAddr();
-		if (StringUtils.isEmpty(forwardedIpAddress) && StringUtils.isEmpty(ipAddress)) {
-			throw new RuntimeException("Can't extract IP address from request");
-		}
-
-		String resolvedIpAddress = StringUtils.isEmpty(forwardedIpAddress) ? ipAddress : forwardedIpAddress;
-		VisitorDTO visitor = visitorVerificationLogic.resolveVisitor(resolvedIpAddress, visitorIdCookieValue);
-		Cookie cookie = new Cookie("visitor-id", visitor.getId());
-		cookie.setPath("/");
-		cookie.setMaxAge(COOKIE_MAX_AGE_SECONDS);
-		response.addCookie(cookie);
-		return visitor;
-	}
+	
 }

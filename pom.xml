@@ -8,8 +8,8 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>service</name>
-	<description>Service for social-suite</description>
+	<name>sports-combobulator</name>
+	<description>Service for the Sports Combobulator</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
