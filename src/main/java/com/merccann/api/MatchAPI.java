@@ -73,7 +73,7 @@ public class MatchAPI {
 		return matchLogic.getMatches(startDate, endDate, league, visitor.getId());
 	}
 
-	@ApiOperation(value = "getMatche")
+	@ApiOperation(value = "getMatch")
 	@RequestMapping(method = RequestMethod.GET, value = "/{id}")
 	@ResponseBody
 	@Transactional

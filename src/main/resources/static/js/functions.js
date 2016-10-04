@@ -1,9 +1,3 @@
-$(document).ready(function(){
-    $("p").click(function(){
-        $("p").hide();
-    });
-});
-
 function goToComingSoon() {
     window.location.href = "/coming-soon.html";
 }
