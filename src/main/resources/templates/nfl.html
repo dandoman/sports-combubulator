@@ -2,12 +2,34 @@
 	<head>
     	<title>Sports Combobulator</title>
     	<link rel="stylesheet" type="text/css" href="/css/custom.css" />
+    	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css" />
 		<script src="/js/jquery-3.1.1.min.js"></script>
 		<script src="/js/functions.js"></script>
 		<script src="/js/nfl.js"></script>
 	</head>
 	<body>
-    	<h2>NFL</h2>
-    	<div id="matches"></div>
+	<div class="container-narrow">
+      <div class="masthead">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="/index.html">Home</a></li>
+          <li class="active"><a href="/about.html">About</a></li>
+          <li class="active"><a href="/contact.html">Contact</a></li>
+        </ul>
+        <h3 class="muted">Sports Combobulator</h3>
+      </div>
+
+      <hr>
+      	<div class="jumbotron">
+        	<h1>Upcoming NFL Matches</h1>
+        	<p>
+        		After you make a prediction, you will be able to see what everyone else thinks about that match
+        	</p>
+      	</div>
+      </hr>
+
+      <div class="row-fluid marketing">
+        <div id="matches"></div>
+      </div>
+    </div>
 	</body>
 </html>

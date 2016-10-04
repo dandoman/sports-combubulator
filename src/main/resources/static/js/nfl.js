@@ -24,6 +24,14 @@ function createOrUpdatePrediction(matchId, isDefined) {
 function createPrediction(matchId) {
     var visitorScore = $('#' + matchId).find(".visitorScorePrediction").val();
     var homeScore = $('#' + matchId).find(".homeScorePrediction").val();
+    var homeScoreInt = parseInt(homeScore, 10);
+    var visitorScoreInt = parseInt(visitorScore, 10);
+    if(isNaN(homeScoreInt) || isNaN(visitorScoreInt)) {
+    	alert("Provided scores are not integers");
+    	return;
+    }
+    homeScore = '' + homeScoreInt;
+    visitorScore = '' + visitorScoreInt;
     
   	$.ajax({
     	url: '/api/match/prediction',
@@ -57,6 +65,14 @@ function createPrediction(matchId) {
 function updatePrediction(matchId) {
     var visitorScore = $('#' + matchId).find(".visitorScorePrediction").val();
     var homeScore = $('#' + matchId).find(".homeScorePrediction").val();
+    var homeScoreInt = parseInt(homeScore, 10);
+    var visitorScoreInt = parseInt(visitorScore, 10);
+    if(isNaN(homeScoreInt) || isNaN(visitorScoreInt)) {
+    	alert("Provided scores are not integers");
+    	return;
+    }
+    homeScore = '' + homeScoreInt;
+    visitorScore = '' + visitorScoreInt;
     
   	$.ajax({
     	url: '/api/match/prediction',
