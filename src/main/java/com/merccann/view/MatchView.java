@@ -11,8 +11,8 @@ public class MatchView {
 	private String predictedWinnerId;
 	private String predictedHomeScore;
 	private String predictedVisitorScore;
-	private long predictedHomeWins;
-	private long predictedAwayWins;
+	private long countHomeWins;
+	private long countAwayWins;
 	private long medianHomeScore;
 	private long medianAwayScore;
 	
@@ -34,8 +34,8 @@ public class MatchView {
 		view.setPredictedWinnerId(dto.getPredictedWinnerId());
 		view.setMedianAwayScore(visitorScoreMedian);
 		view.setMedianHomeScore(homeScoreMedian);
-		view.setPredictedAwayWins(awayWinPredictions);
-		view.setPredictedHomeWins(homeWinPredicitons);
+		view.setCountAwayWins(awayWinPredictions);
+		view.setCountHomeWins(homeWinPredicitons);
 		return view;
 	}
 }
