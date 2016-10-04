@@ -2,6 +2,7 @@ package com.merccann.logic;
 
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
@@ -11,11 +12,11 @@ import com.merccann.exception.BadArgsException;
 import lombok.Setter;
 
 public class PredictionLogic {
-	
+
 	@Autowired
 	@Setter
 	private PredictionDao predictionDao;
-	
+
 	@Autowired
 	@Setter
 	private MatchDao matchDao;
@@ -27,6 +28,22 @@ public class PredictionLogic {
 		if(match == null) {
 			throw new BadArgsException("No match with id " + matchId + " found");
 		}
+		
+		if(StringUtils.isEmpty(victoriousTeamId)) {
+			//Must determine victor by score
+			if(homeTeamScore == null && visitorTeamScore == null){
+				throw new BadArgsException("If no winner prediction is provided explicitly, you must provide a predicted score for each team");
+			} else {
+				if(homeTeamScore > visitorTeamScore){
+					victoriousTeamId = match.getHomeTeamId();
+				} else if(homeTeamScore < visitorTeamScore) {
+					victoriousTeamId = match.getVisitorTeamId();
+				} else {
+					throw new BadArgsException("You cannot predict a tie game");
+				}
+			}
+		}
+		
 		if(!match.getHomeTeamId().equals(victoriousTeamId) && !match.getVisitorTeamId().equals(victoriousTeamId)) {
 			throw new BadArgsException(victoriousTeamId + " team id does not belong to match " + matchId);
 		}
