@@ -43,10 +43,6 @@ div {
     font-family: 'Nobile', Helvetica, Arial, sans-serif;
 }
 
-body {   
-  background: url(../img/cream_dust.png) repeat 0 0;
-}
-
 /* Custom container */
 .container-narrow {
   margin: 0 auto;

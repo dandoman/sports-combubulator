@@ -4,14 +4,18 @@ $(document).ready(function(){
     		data.forEach(function(arrayItem){
     			$("#matches").append(`<div id="${arrayItem.match.matchId}"><p><strong>${arrayItem.match.visitorTeamName} @ ${arrayItem.match.homeTeamName}</strong>
     			<br>Kickoff: ${new Date(arrayItem.match.matchStartTime).toLocaleString()}
-    			<br>${arrayItem.match.visitorTeamName} - Votes to win: <strong>${arrayItem.countAwayWins}</strong> Median predicted score: <strong>${arrayItem.medianAwayScore}</strong>
-    			<br>${arrayItem.match.homeTeamName} -  Votes to win: <strong>${arrayItem.countHomeWins}</strong> Median predicted score: <strong>${arrayItem.medianHomeScore}</strong>
+    			<br>${arrayItem.match.visitorTeamName} - Votes to win: <strong>${getHiddenOrActualValue(arrayItem,arrayItem.countAwayWins)}</strong> Median predicted score: <strong>${getHiddenOrActualValue(arrayItem,arrayItem.medianAwayScore)}</strong>
+    			<br>${arrayItem.match.homeTeamName} -  Votes to win: <strong>${getHiddenOrActualValue(arrayItem,arrayItem.countHomeWins)}</strong> Median predicted score: <strong>${getHiddenOrActualValue(arrayItem,arrayItem.medianHomeScore)}</strong>
     			<br>Your prediction - ${arrayItem.match.visitorTeamName}: <input size="2" type="text" class="visitorScorePrediction" value="${arrayItem.predictedVisitorScore != null ? arrayItem.predictedVisitorScore : ""}"> ${arrayItem.match.homeTeamName}: <input size="2" type="text" class="homeScorePrediction" value="${arrayItem.predictedHomeScore != null ? arrayItem.predictedHomeScore : ""}">
     			<br><button onClick="createOrUpdatePrediction('${arrayItem.match.matchId}', ${arrayItem.predictedWinnerId != null})">${arrayItem.predictedWinnerId != null ? "Update Prediction" : "Submit Prediction"}</button></p></div>`);
     		});
   		}
   	);
 });
+
+function getHiddenOrActualValue(arrayItem, value) {
+	return (arrayItem.predictedWinnerId != null) ? value : "Hidden";
+}
 
 function createOrUpdatePrediction(matchId, isDefined) {
 	if(isDefined) {
