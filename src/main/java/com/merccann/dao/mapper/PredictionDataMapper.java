@@ -6,7 +6,9 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 
+import com.merccann.dao.mapper.provider.PredictionQueryProvider;
 import com.merccann.dto.PredictionDTO;
 
 public interface PredictionDataMapper {
@@ -26,4 +28,7 @@ public interface PredictionDataMapper {
 
 	@Delete("DELETE FROM predictions WHERE visitor_id = #{visitorId} AND match_id = #{matchId}")
 	public int deletePrediction(@Param("matchId") String matchId, @Param("visitorId") String visitorId);
+
+	@SelectProvider(type = PredictionQueryProvider.class,  method = "getPredicitonsByMatchIds")
+	public List<PredictionDTO> getPredicitonsByMatchIds(@Param("matchIds") List<String> matchIds);
 }

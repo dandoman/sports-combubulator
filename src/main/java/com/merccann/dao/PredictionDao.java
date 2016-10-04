@@ -1,6 +1,7 @@
 package com.merccann.dao;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +25,10 @@ public class PredictionDao extends Dao {
 	
 	public List<PredictionDTO> getPredicitonsForMatch(String matchId) {
 		return getAsList(dataMapper.getPredicitonsByMatchId(matchId));
+	}
+	
+	public List<PredictionDTO> getPredicitonsForMatches(List<String> matchIdList) {
+		return getAsList(dataMapper.getPredicitonsByMatchIds(matchIdList));
 	}
 
 	public PredictionDTO getPredicitonForVisitorAndMatch(String matchId, String visitorId) {

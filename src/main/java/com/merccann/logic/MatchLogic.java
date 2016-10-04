@@ -41,11 +41,8 @@ public class MatchLogic {
 			throw new BadArgsException("Must provide reasonable dates");
 		}
 		List<MatchAndPredictionDTO> matches = matchDao.getMatchAndPredicitonByDates(startDate,endDate,league,visitorId);
-		Map<UUID,List<PredictionDTO>> predicitonsByMatchId = new HashMap<>();
-		matches.forEach(match -> {
-			List<PredictionDTO> predicitonsForMatch = predictionDao.getPredicitonsForMatch(match.getMatchId());
-			predicitonsByMatchId.put(UUID.fromString(match.getMatchId()), predicitonsForMatch);
-		});
+		List<PredictionDTO> predicitonsForMatches = predictionDao.getPredicitonsForMatches(matches.stream().map(m -> m.getMatchId()).collect(Collectors.toList()));
+		Map<UUID,List<PredictionDTO>> predicitonsByMatchId = predicitonsForMatches.stream().collect(Collectors.groupingBy(m -> UUID.fromString(m.getMatchId())));
 		
 		return matches.stream().map(match -> {
 			List<PredictionDTO> predictions = predicitonsByMatchId.get(UUID.fromString(match.getMatchId())); //Trap, but I'd rather be hashing UUIDs than strings
