@@ -1,0 +1,7 @@
+p { text-align: center }
+h2 { text-align: center }
+.maindiv { text-align: center }
+.button {
+    position: absolute;
+    top: 50%;
+}
