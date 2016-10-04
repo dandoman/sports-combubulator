@@ -1,5 +1,6 @@
 package com.merccann.logic;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +42,9 @@ public class MatchLogic {
 			throw new BadArgsException("Must provide reasonable dates");
 		}
 		List<MatchAndPredictionDTO> matches = matchDao.getMatchAndPredicitonByDates(startDate,endDate,league,visitorId);
+		if(matches == null || matches.isEmpty()){
+			return new ArrayList<>();
+		}
 		List<PredictionDTO> predicitonsForMatches = predictionDao.getPredicitonsForMatches(matches.stream().map(m -> m.getMatchId()).collect(Collectors.toList()));
 		Map<UUID,List<PredictionDTO>> predicitonsByMatchId = predicitonsForMatches.stream().collect(Collectors.groupingBy(m -> UUID.fromString(m.getMatchId())));
 		
