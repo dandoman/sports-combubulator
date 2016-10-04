@@ -13,7 +13,9 @@ import com.merccann.dao.VisitorDao;
 import com.merccann.dto.VisitorDTO;
 
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 public class VisitorVerificationLogic {
 
 	@Autowired
@@ -53,10 +55,14 @@ public class VisitorVerificationLogic {
 			String visitorIdCookieValue, int cookieMaxAge) {
 		String forwardedIpAddress = request.getHeader("X-FORWARDED-FOR");
 		String ipAddress = request.getRemoteAddr();
+		log.info("IP Address: " + ipAddress);
+		log.info("Forwarded IP Address: " + forwardedIpAddress);
+		
 		if (StringUtils.isEmpty(forwardedIpAddress) && StringUtils.isEmpty(ipAddress)) {
 			throw new RuntimeException("Can't extract IP address from request");
 		}
 
+		//Always use forwarded ip address if it's there
 		String resolvedIpAddress = StringUtils.isEmpty(forwardedIpAddress) ? ipAddress : forwardedIpAddress;
 		VisitorDTO visitor = resolveVisitor(resolvedIpAddress, visitorIdCookieValue);
 		Cookie cookie = new Cookie("visitor-id", visitor.getId());
