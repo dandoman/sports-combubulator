@@ -7,6 +7,7 @@ import org.springframework.util.StringUtils;
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
 import com.merccann.dto.MatchDTO;
+import com.merccann.dto.PredictionDTO;
 import com.merccann.exception.BadArgsException;
 
 import lombok.Setter;
@@ -31,7 +32,7 @@ public class PredictionLogic {
 		
 		if(StringUtils.isEmpty(victoriousTeamId)) {
 			//Must determine victor by score
-			if(homeTeamScore == null && visitorTeamScore == null){
+			if(homeTeamScore == null || visitorTeamScore == null){
 				throw new BadArgsException("If no winner prediction is provided explicitly, you must provide a predicted score for each team");
 			} else {
 				if(homeTeamScore > visitorTeamScore){
@@ -66,5 +67,16 @@ public class PredictionLogic {
 		}
 		
 		throw new BadArgsException("One of visitor or home team score was undefined");
+	}
+
+	public void updatePrediciton(String matchId, String victoriousTeamId, Integer homeTeamScore,
+			Integer visitorTeamScore, String visitorId) {
+		
+		PredictionDTO prediction = predictionDao.getPredicitonForVisitorAndMatch(matchId, visitorId);
+		if(prediction == null || visitorId == null) {
+			throw new BadArgsException("No existing prediction found to update");
+		}
+		predictionDao.deletePrediction(prediction.getVisitorId(), prediction.getMatchId());
+		createPrediciton(matchId, victoriousTeamId, homeTeamScore, visitorTeamScore, visitorId);
 	}
 }

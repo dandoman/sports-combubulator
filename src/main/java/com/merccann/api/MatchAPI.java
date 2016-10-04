@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.merccann.League;
 import com.merccann.dto.VisitorDTO;
+import com.merccann.exception.BadArgsException;
 import com.merccann.logic.MatchLogic;
 import com.merccann.logic.PredictionLogic;
 import com.merccann.logic.VisitorVerificationLogic;
@@ -93,7 +94,25 @@ public class MatchAPI {
 			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
 		VisitorDTO visitor = visitorVerificationLogic.resolveVisitorAndSetCookie(request, response, visitorId,
 				COOKIE_MAX_AGE_SECONDS);
+		if(StringUtils.isEmpty(r.getMatchId())) {
+			throw new BadArgsException("Must provide a match id");
+		}
 		predicitonLogic.createPrediciton(r.getMatchId(), r.getVictoriousTeamId(), r.getHomeTeamScore(),
+				r.getVisitorTeamScore(), visitor.getId());
+	}
+	
+	@ApiOperation(value = "updatePrediction")
+	@RequestMapping(value = "/prediction", method = RequestMethod.PUT)
+	@ResponseBody
+	@Transactional
+	public void updatePrediction(@RequestBody CreatePredictionRequest r, HttpServletRequest request,
+			HttpServletResponse response, @CookieValue(value = "visitor-id", required = false) String visitorId) {
+		VisitorDTO visitor = visitorVerificationLogic.resolveVisitorAndSetCookie(request, response, visitorId,
+				COOKIE_MAX_AGE_SECONDS);
+		if(StringUtils.isEmpty(r.getMatchId())) {
+			throw new BadArgsException("Must provide a match id");
+		}
+		predicitonLogic.updatePrediciton(r.getMatchId(), r.getVictoriousTeamId(), r.getHomeTeamScore(),
 				r.getVisitorTeamScore(), visitor.getId());
 	}
 

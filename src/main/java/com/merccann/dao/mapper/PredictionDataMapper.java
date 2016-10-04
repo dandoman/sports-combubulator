@@ -2,6 +2,7 @@ package com.merccann.dao.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -18,4 +19,11 @@ public interface PredictionDataMapper {
 	@Select("SELECT visitor_id as visitorId, match_id as matchId, victorious_team_id as victoriousTeamId, "
 			+ "visitor_team_score as visitorTeamScore, home_team_score as homeTeamScore FROM predictions WHERE match_id = #{matchId}")
 	public List<PredictionDTO> getPredicitonsByMatchId(@Param("matchId") String matchId);
+
+	@Select("SELECT visitor_id as visitorId, match_id as matchId, victorious_team_id as victoriousTeamId, "
+			+ "visitor_team_score as visitorTeamScore, home_team_score as homeTeamScore FROM predictions WHERE match_id = #{matchId} AND visitor_id = #{visitorId}")
+	public List<PredictionDTO> getPredictionByMatchAndVisitor(@Param("matchId") String matchId, @Param("visitorId") String visitorId);
+
+	@Delete("DELETE FROM predictions WHERE visitor_id = #{visitorId} AND match_id = #{matchId}")
+	public int deletePrediction(@Param("matchId") String matchId, @Param("visitorId") String visitorId);
 }

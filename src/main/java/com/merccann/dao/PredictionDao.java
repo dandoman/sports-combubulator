@@ -25,4 +25,12 @@ public class PredictionDao extends Dao {
 	public List<PredictionDTO> getPredicitonsForMatch(String matchId) {
 		return getAsList(dataMapper.getPredicitonsByMatchId(matchId));
 	}
+
+	public PredictionDTO getPredicitonForVisitorAndMatch(String matchId, String visitorId) {
+		return getSingleResultById(dataMapper.getPredictionByMatchAndVisitor(matchId, visitorId), visitorId);
+	}
+
+	public void deletePrediction(String visitorId, String matchId) {
+		dataMapper.deletePrediction(matchId, visitorId);
+	}
 }
