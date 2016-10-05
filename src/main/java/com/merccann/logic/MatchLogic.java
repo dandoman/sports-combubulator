@@ -61,6 +61,7 @@ public class MatchLogic {
 	}
 	
 	private MatchView buildMatchView(MatchAndPredictionDTO match, List<PredictionDTO> predictions) {
+		predictions = (predictions == null) ? new ArrayList<>() : predictions;
 		Map<String, List<PredictionDTO>> predictionsByTeamId = predictions.stream().collect(Collectors.groupingBy(i -> i.getVictoriousTeamId()));
 		int homeWinPredicitons = 0;
 		int awayWinPredicitons = 0;
