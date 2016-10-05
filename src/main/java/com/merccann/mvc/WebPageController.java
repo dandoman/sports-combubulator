@@ -21,6 +21,12 @@ public class WebPageController {
 	@Setter
 	private VisitorVerificationLogic visitorVerificationLogic;
 
+	@RequestMapping(value = "/")
+	public String root(@CookieValue(value = "visitor-id", required = false) String visitorId, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
+		return "redirect:index.html";
+	}
+	
 	@RequestMapping(value = "/index.html")
 	public String index(@CookieValue(value = "visitor-id", required = false) String visitorId, Model model,
 			HttpServletRequest request, HttpServletResponse response) {
