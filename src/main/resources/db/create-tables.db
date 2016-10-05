@@ -53,3 +53,6 @@ CREATE TABLE predictions (
 	FOREIGN KEY (match_id) REFERENCES matches (id),
 	FOREIGN KEY (victorious_team_id) REFERENCES teams (id)
 );
+CREATE INDEX predictions_match_id_idx ON predictions (match_id);
+
+
