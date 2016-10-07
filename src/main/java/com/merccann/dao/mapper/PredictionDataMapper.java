@@ -1,5 +1,6 @@
 package com.merccann.dao.mapper;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Delete;
@@ -8,7 +9,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 
+import com.merccann.League;
 import com.merccann.dao.mapper.provider.PredictionQueryProvider;
+import com.merccann.dto.MatchAndPredictionDTO;
 import com.merccann.dto.PredictionDTO;
 
 public interface PredictionDataMapper {
@@ -31,4 +34,13 @@ public interface PredictionDataMapper {
 
 	@SelectProvider(type = PredictionQueryProvider.class,  method = "getPredicitonsByMatchIds")
 	public List<PredictionDTO> getPredicitonsByMatchIds(@Param("matchIds") List<String> matchIds);
+
+	@Select("SELECT m.id as matchId, m.visitor_team_id as visitorTeamId, m.sport_league_abbrv as league, "
+			+ "(SELECT team_name FROM teams WHERE id = m.visitor_team_id) as visitorTeamName, "
+			+ "(SELECT team_name FROM teams WHERE id = m.home_team_id) as homeTeamName, "
+			+ "m.home_team_id as homeTeamId, m.match_start_time as matchStartTime, p.victorious_team_id as predictedWinnerId, "
+			+ "p.visitor_team_score as predictedVisitorScore, p.home_team_score as predictedHomeScore "
+			+ "FROM predictions p INNER JOIN matches m ON m.id = p.match_id "
+			+ "WHERE p.visitor_id = #{visitorId}")
+	public List<MatchAndPredictionDTO> getPredictionsForVisitor(@Param("visitorId") String visitorId);
 }

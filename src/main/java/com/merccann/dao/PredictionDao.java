@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.merccann.dao.mapper.PredictionDataMapper;
+import com.merccann.dto.MatchAndPredictionDTO;
 import com.merccann.dto.PredictionDTO;
 
 import lombok.Setter;
@@ -37,5 +38,9 @@ public class PredictionDao extends Dao {
 
 	public void deletePrediction(String visitorId, String matchId) {
 		dataMapper.deletePrediction(matchId, visitorId);
+	}
+
+	public List<MatchAndPredictionDTO> getPredictionsForVisitor(String visitorId) {
+		return getAsList(dataMapper.getPredictionsForVisitor(visitorId));
 	}
 }
