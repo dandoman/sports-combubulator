@@ -1,14 +1,10 @@
 package com.merccann.logic;
 
-import java.util.List;
-
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
-import com.merccann.dto.MatchAndPredictionDTO;
 import com.merccann.dto.MatchDTO;
 import com.merccann.dto.PredictionDTO;
 import com.merccann.exception.BadArgsException;
@@ -24,7 +20,7 @@ public class PredictionLogic {
 	@Autowired
 	@Setter
 	private MatchDao matchDao;
-
+	
 	public void createPrediciton(String matchId, String victoriousTeamId, Integer homeTeamScore,
 			Integer visitorTeamScore, String visitorId) {
 		
@@ -81,9 +77,5 @@ public class PredictionLogic {
 		}
 		predictionDao.deletePrediction(prediction.getVisitorId(), prediction.getMatchId());
 		createPrediciton(matchId, victoriousTeamId, homeTeamScore, visitorTeamScore, visitorId);
-	}
-	
-	public List<MatchAndPredictionDTO> getPredictionsForUser(String visitorId) {
-		return predictionDao.getPredictionsForVisitor(visitorId);
 	}
 }
