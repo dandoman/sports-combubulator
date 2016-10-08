@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UserView {
-	private MatchView match;
+	private MatchView matchData;
 	private Integer awayFinalScore;
 	private Integer homeFinalScore;
 }

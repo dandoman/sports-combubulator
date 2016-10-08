@@ -44,5 +44,14 @@ public class WebPageController {
 		}
 		return "nfl";
 	}
+	
+	@RequestMapping(value = "/user")
+	public String user(@CookieValue(value = "visitor-id", required = false) String visitorId, Model model,
+			HttpServletRequest request, HttpServletResponse response) {
+		if (StringUtils.isEmpty(visitorId)) {
+			visitorVerificationLogic.resolveVisitorAndSetCookie(request, response, visitorId, COOKIE_MAX_AGE_SECONDS);
+		}
+		return "user";
+	}
 
 }

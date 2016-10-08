@@ -109,7 +109,7 @@ public class MatchLogic {
 			List<PredictionDTO> predictions = predicitonsByMatchId.get(UUID.fromString(match.getMatchId()));
 			MatchView matchView = buildMatchView(match, predictions);
 			UserView userView = new UserView();
-			userView.setMatch(matchView);
+			userView.setMatchData(matchView);
 			return userView;
 		}).collect(Collectors.toList());
 	}
