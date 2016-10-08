@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.merccann.League;
-import com.merccann.Team;
+import com.merccann.dao.TeamDao;
+import com.merccann.dto.TeamDTO;
 import com.merccann.exception.BadArgsException;
 import com.merccann.logic.MatchLogic;
 import com.merccann.request.CreateMatchRequest;
@@ -32,6 +33,11 @@ public class AdminAPI {
 	@Autowired
 	@Setter
 	private MatchLogic matchLogic;
+	
+	//Not great to have a dao here given the convention we've established. Make sure to put it in the logic layer when appropriate
+	@Autowired
+	@Setter
+	private TeamDao teamDao;
 	
 	//Quick n dirty. This should really be in the db...
 	public static final String hashed = "db0bb689968739b5e32b84859773f83e6cfe32ce2e42436c7a9d1a0caa936a9a";
@@ -52,8 +58,8 @@ public class AdminAPI {
 	@RequestMapping(value = "/teams", method = RequestMethod.GET)
 	@ResponseBody
 	@Transactional
-	public List<Team> getTeams(@RequestParam(value = "league", required = true) League league) {
-		return matchLogic.getTeams(league);
+	public List<TeamDTO> getTeams(@RequestParam(value = "league", required = true) League league) {
+		return teamDao.getTeams(league);
 	}
 	
 	private String hash(String saltedPassword) {

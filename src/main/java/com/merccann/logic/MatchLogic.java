@@ -14,12 +14,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
 import com.merccann.League;
-import com.merccann.Team;
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
 import com.merccann.dto.MatchAndPredictionDTO;
 import com.merccann.dto.MatchDTO;
 import com.merccann.dto.PredictionDTO;
+import com.merccann.dto.TeamDTO;
 import com.merccann.exception.BadArgsException;
 import com.merccann.view.MatchView;
 import com.merccann.view.UserView;
@@ -123,9 +123,5 @@ public class MatchLogic {
 			throw new BadArgsException("Must provide all of homeTeamId, awayTeamId, startTime and league");
 		}
 		matchDao.createMatch(UUID.randomUUID().toString(), homeTeamId, awayTeamId, startTime, league);
-	}
-
-	public List<Team> getTeams(League league) {
-		return null;
 	}
 }

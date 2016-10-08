@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
+import com.merccann.dao.TeamDao;
 import com.merccann.dao.VisitorDao;
 import com.merccann.logic.MatchLogic;
 import com.merccann.logic.PredictionLogic;
@@ -97,6 +98,11 @@ public class App {
 	@Bean
 	public PredictionDao createPredictionDao() {
 		return new PredictionDao();
+	}
+	
+	@Bean
+	public TeamDao createTeamDao() {
+		return new TeamDao();
 	}
 	
 	@Bean
