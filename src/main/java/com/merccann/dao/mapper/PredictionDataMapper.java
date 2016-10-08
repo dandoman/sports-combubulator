@@ -41,6 +41,6 @@ public interface PredictionDataMapper {
 			+ "(SELECT team_name FROM teams WHERE id = m.home_team_id) as homeTeamName, "
 			+ "m.home_team_id as homeTeamId, m.final_home_score as finalHomeScore, m.final_away_score as finalAwayScore, m.match_start_time as matchStartTime, p.victorious_team_id as predictedWinnerId, "
 			+ "p.visitor_team_score as predictedVisitorScore, p.home_team_score as predictedHomeScore "
-			+ "FROM predictions p INNER JOIN matches m ON m.id = p.match_id " + "WHERE p.visitor_id = #{visitorId}")
+			+ "FROM predictions p INNER JOIN matches m ON m.id = p.match_id " + "WHERE p.visitor_id = #{visitorId} ORDER BY m.match_start_time DESC")
 	public List<MatchAndPredictionDTO> getPredictionsForVisitor(@Param("visitorId") String visitorId);
 }
