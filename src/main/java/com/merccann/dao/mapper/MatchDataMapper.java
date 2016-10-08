@@ -1,8 +1,10 @@
 package com.merccann.dao.mapper;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -38,4 +40,7 @@ public interface MatchDataMapper {
 			+ "m.home_team_id as homeTeamId, m.match_start_time as matchStartTime FROM matches m WHERE m.id = #{matchId} ORDER BY m.match_start_time DESC")
 	public List<MatchDTO> getMatchById(@Param("matchId") String matchId);
 
+	@Insert("INSERT INTO matches(id,sport_league_abbrv,visitor_team_id,home_team_id,match_start_time) "
+			+ "VALUES (#{id},#{league},#{awayTeamId},#{homeTeamId}, #{startTime})")
+	public int createMatch(@Param("id") String id, @Param("homeTeamId") String homeTeamId, @Param("awayTeamId") String awayTeamId, @Param("startTime") Date startTime, @Param("league") League league);
 }

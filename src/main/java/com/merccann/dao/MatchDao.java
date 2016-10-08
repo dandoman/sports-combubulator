@@ -31,4 +31,8 @@ public class MatchDao extends Dao{
 	public MatchAndPredictionDTO getMatchAndPredictionsById(String id, String visitorId) {
 		return getSingleResultById(dataMapper.getMatchAndPredictionById(id, visitorId), id);
 	}
+	
+	public void createMatch(String id, String homeTeamId, String awayTeamId, Date startTime, League league) {
+		dataMapper.createMatch(id, homeTeamId, awayTeamId, startTime, league);
+	}
 }

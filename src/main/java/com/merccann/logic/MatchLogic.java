@@ -11,8 +11,10 @@ import java.util.stream.Collectors;
 import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import com.merccann.League;
+import com.merccann.Team;
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
 import com.merccann.dto.MatchAndPredictionDTO;
@@ -114,5 +116,16 @@ public class MatchLogic {
 			userView.setAwayFinalScore(match.getFinalAwayScore());
 			return userView;
 		}).collect(Collectors.toList());
+	}
+
+	public void createMatch(String awayTeamId, String homeTeamId, Date startTime, League league) {
+		if(StringUtils.isEmpty(homeTeamId) || StringUtils.isEmpty(awayTeamId) || startTime == null || league == null){
+			throw new BadArgsException("Must provide all of homeTeamId, awayTeamId, startTime and league");
+		}
+		matchDao.createMatch(UUID.randomUUID().toString(), homeTeamId, awayTeamId, startTime, league);
+	}
+
+	public List<Team> getTeams(League league) {
+		return null;
 	}
 }

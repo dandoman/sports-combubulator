@@ -115,5 +115,4 @@ public class MatchAPI {
 		predicitonLogic.updatePrediciton(r.getMatchId(), r.getVictoriousTeamId(), r.getHomeTeamScore(),
 				r.getVisitorTeamScore(), visitor.getId());
 	}
-
 }
