@@ -19,10 +19,6 @@ public class MatchDao extends Dao{
 	@Setter
 	@Autowired
 	private MatchDataMapper dataMapper; 
-	
-	public List<MatchDTO> getMatchesByDateRange(League sport, Date start, Date end) {
-		return null;
-	}
 
 	public MatchDTO getMatchById(String matchId) {
 		return getSingleResultById(dataMapper.getMatchById(matchId), matchId);

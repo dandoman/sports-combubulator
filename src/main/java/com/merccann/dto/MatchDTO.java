@@ -15,4 +15,6 @@ public class MatchDTO {
 	private String homeTeamId;
 	private String homeTeamName;
 	private Date matchStartTime;
+	private Integer finalHomeScore;
+	private Integer finalAwayScore;
 }

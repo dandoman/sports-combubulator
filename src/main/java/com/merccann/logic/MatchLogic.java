@@ -110,6 +110,8 @@ public class MatchLogic {
 			MatchView matchView = buildMatchView(match, predictions);
 			UserView userView = new UserView();
 			userView.setMatchData(matchView);
+			userView.setHomeFinalScore(match.getFinalHomeScore());
+			userView.setAwayFinalScore(match.getFinalAwayScore());
 			return userView;
 		}).collect(Collectors.toList());
 	}

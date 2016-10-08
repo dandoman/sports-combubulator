@@ -18,4 +18,6 @@ public class MatchAndPredictionDTO {
 	private String predictedWinnerId;
 	private String predictedHomeScore;
 	private String predictedVisitorScore;
+	private Integer finalHomeScore;
+	private Integer finalAwayScore;
 }
