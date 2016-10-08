@@ -122,6 +122,10 @@ public class MatchLogic {
 		if(StringUtils.isEmpty(homeTeamId) || StringUtils.isEmpty(awayTeamId) || startTime == null || league == null){
 			throw new BadArgsException("Must provide all of homeTeamId, awayTeamId, startTime and league");
 		}
+		if(homeTeamId.equals(awayTeamId)) {
+			throw new BadArgsException("Team Cannot Play Themselves!");
+		}
+		
 		matchDao.createMatch(UUID.randomUUID().toString(), homeTeamId, awayTeamId, startTime, league);
 	}
 }
