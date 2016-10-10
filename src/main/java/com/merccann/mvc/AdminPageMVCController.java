@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminPageMVCController {
-	@RequestMapping(value = "/admin/create-match")
+	@RequestMapping(value = "/admin")
 	public String user(Model model) {
-		return "admin-create-game";
+		return "admin";
 	}
 }
