@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.merccann.League;
 import com.merccann.dao.TeamDao;
+import com.merccann.dto.MatchDTO;
 import com.merccann.dto.TeamDTO;
 import com.merccann.exception.BadArgsException;
 import com.merccann.logic.MatchLogic;
 import com.merccann.request.CreateMatchRequest;
+import com.merccann.request.UpdateMatchScoreRequest;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.Setter;
@@ -62,10 +64,30 @@ public class AdminAPI {
 		return teamDao.getTeams(league);
 	}
 	
-	private String hash(String saltedPassword) {
+	@ApiOperation(value = "getIncompleteMatches")
+	@RequestMapping(value = "/match/incomplete", method = RequestMethod.GET)
+	@ResponseBody
+	@Transactional
+	public List<MatchDTO> getIncompleteMatches(@RequestParam(value = "league", required = true) League league) {
+		return matchLogic.getIncompleteMatches(league);
+	}
+	
+	@ApiOperation(value = "setMatchScore")
+	@RequestMapping(value = "/match/score", method = RequestMethod.POST)
+	@ResponseBody
+	@Transactional
+	public void setMatchScore(@RequestBody UpdateMatchScoreRequest r, @CookieValue(value = "admin-id", required = true) String adminId) {
+		if(!hashed.equals(hash(adminId))) {
+			throw new BadArgsException("Wrong Admin Id");
+		}
+		
+		matchLogic.updateMatchScore(r.getMatchId(), r.getFinalAwayScore(), r.getFinalHomeScore());
+	}
+	
+	private String hash(String password) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("SHA-256");
-			md.update(saltedPassword.getBytes("UTF-8"));
+			md.update(password.getBytes("UTF-8"));
 			return Hex.encodeHexString(md.digest());
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			throw new RuntimeException("Encoding error", e);

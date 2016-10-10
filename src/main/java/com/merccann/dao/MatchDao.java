@@ -35,4 +35,12 @@ public class MatchDao extends Dao{
 	public void createMatch(String id, String homeTeamId, String awayTeamId, Date startTime, League league) {
 		dataMapper.createMatch(id, homeTeamId, awayTeamId, startTime, league);
 	}
+
+	public List<MatchDTO> getIncompleteMatches(League league) {
+		return getAsList(dataMapper.getIncompleteMatches(league));
+	}
+
+	public void updateMatchScore(String matchId, int finalAwayScore, int finalHomeScore) {
+		dataMapper.updateMatchScore(matchId, finalAwayScore, finalHomeScore);
+	}
 }

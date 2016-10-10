@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.merccann.League;
 import com.merccann.dto.MatchAndPredictionDTO;
@@ -42,5 +43,16 @@ public interface MatchDataMapper {
 
 	@Insert("INSERT INTO matches(id,sport_league_abbrv,visitor_team_id,home_team_id,match_start_time) "
 			+ "VALUES (#{id},#{league},#{awayTeamId},#{homeTeamId}, #{startTime})")
-	public int createMatch(@Param("id") String id, @Param("homeTeamId") String homeTeamId, @Param("awayTeamId") String awayTeamId, @Param("startTime") Date startTime, @Param("league") League league);
+	public int createMatch(@Param("id") String id, @Param("homeTeamId") String homeTeamId,
+			@Param("awayTeamId") String awayTeamId, @Param("startTime") Date startTime, @Param("league") League league);
+
+	@Select("SELECT m.id as matchId, m.final_home_score as finalHomeScore, m.final_away_score as finalAwayScore, m.visitor_team_id as visitorTeamId, m.sport_league_abbrv as league, "
+			+ "(SELECT team_name FROM teams WHERE id = m.visitor_team_id) as visitorTeamName, "
+			+ "(SELECT team_name FROM teams WHERE id = m.home_team_id) as homeTeamName, "
+			+ "m.home_team_id as homeTeamId, m.match_start_time as matchStartTime FROM matches m WHERE m.sport_league_abbrv = #{league} AND m.final_away_score IS NULL "
+			+ "AND m.final_home_score IS NULL ORDER BY m.match_start_time DESC")
+	public List<MatchDTO> getIncompleteMatches(@Param("league") League league);
+
+	@Update("UPDATE matches SET final_away_score = #{finalAwayScore}, final_home_score = #{finalHomeScore} WHERE id = #{matchId}")
+	public int updateMatchScore(@Param("matchId") String matchId, @Param("finalAwayScore") int finalAwayScore, @Param("finalHomeScore") int finalHomeScore);
 }

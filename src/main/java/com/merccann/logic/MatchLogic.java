@@ -128,4 +128,18 @@ public class MatchLogic {
 		
 		matchDao.createMatch(UUID.randomUUID().toString(), homeTeamId, awayTeamId, startTime, league);
 	}
+
+	public List<MatchDTO> getIncompleteMatches(League league) {
+		return matchDao.getIncompleteMatches(league);
+	}
+
+	public void updateMatchScore(String matchId, int finalAwayScore, int finalHomeScore) {
+		if(StringUtils.isEmpty(matchId)){
+			throw new BadArgsException("Must provide a match id");
+		}
+		if(finalAwayScore < 0 || finalHomeScore < 0) {
+			throw new BadArgsException("Scores must be positive integers");
+		}
+		matchDao.updateMatchScore(matchId, finalAwayScore, finalHomeScore);
+	}
 }
