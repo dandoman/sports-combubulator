@@ -30,8 +30,8 @@ public interface MatchDataMapper {
 			+ "(SELECT team_name FROM teams WHERE id = m.home_team_id) as homeTeamName, "
 			+ "m.home_team_id as homeTeamId, m.match_start_time as matchStartTime, p.victorious_team_id as predictedWinnerId, "
 			+ "p.visitor_team_score as predictedVisitorScore, p.home_team_score as predictedHomeScore "
-			+ "FROM matches m LEFT JOIN predictions p ON m.id = p.match_id AND p.visitor_id = #{visitorId} ORDER BY m.match_start_time DESC"
-			+ "WHERE m.id = #{id}")
+			+ "FROM matches m LEFT JOIN predictions p ON m.id = p.match_id AND p.visitor_id = #{visitorId} "
+			+ "WHERE m.id = #{id} ORDER BY m.match_start_time DESC")
 	public List<MatchAndPredictionDTO> getMatchAndPredictionById(@Param("id") String id,
 			@Param("visitorId") String visitorId);
 
