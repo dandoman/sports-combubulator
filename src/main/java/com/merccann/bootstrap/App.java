@@ -24,9 +24,11 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.merccann.dao.MatchDao;
 import com.merccann.dao.PredictionDao;
 import com.merccann.dao.TeamDao;
+import com.merccann.dao.UserDao;
 import com.merccann.dao.VisitorDao;
 import com.merccann.logic.MatchLogic;
 import com.merccann.logic.PredictionLogic;
+import com.merccann.logic.UserLogic;
 import com.merccann.logic.VisitorVerificationLogic;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -84,6 +86,11 @@ public class App {
 		return new MatchLogic();
 	}
 	
+	@Bean
+	public UserLogic createUserLogic() {
+		return new UserLogic();
+	}
+	
 	/* DAOS */
 	@Bean
 	public VisitorDao createVisitorDao() {
@@ -103,6 +110,11 @@ public class App {
 	@Bean
 	public TeamDao createTeamDao() {
 		return new TeamDao();
+	}
+	
+	@Bean
+	public UserDao createUserDao() {
+		return new UserDao();
 	}
 	
 	@Bean

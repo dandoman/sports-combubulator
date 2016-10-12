@@ -1,2 +1,15 @@
 ALTER TABLE matches ADD COLUMN final_away_score INTEGER;
 ALTER TABLE matches ADD COLUMN final_home_score INTEGER;
+
+CREATE TABLE users (
+	username VARCHAR(70) NOT NULL,
+	hashed_password VARCHAR(70) NOT NULL,
+	password_salt VARCHAR(70) NOT NULL,
+	email_address VARCHAR(70),
+	email_confirmed BOOLEAN NOT NULL DEFAULT FALSE,
+	visitor_id VARCHAR(70) NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT now(),
+    
+    PRIMARY KEY (username),
+    FOREIGN KEY (visitor_id) REFERENCES visitors (id)
+);
