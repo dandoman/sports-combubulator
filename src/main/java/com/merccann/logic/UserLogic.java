@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.codec.binary.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class UserLogic {
 	@Setter
 	private UserDao userDao;
 	
+	private static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
+	
 	public UserDTO createUser(String username, String password, String visitorId, String emailAddress) {
 		if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password) || StringUtils.isEmpty(visitorId)) {
 			throw new BadArgsException("Username and password must be provided");
@@ -33,7 +37,10 @@ public class UserLogic {
 			throw new BadArgsException("User already exists with this session");
 		}
 
-		username = username.trim();
+		Matcher wsMatcher = WHITESPACE_PATTERN.matcher(username);
+		if(wsMatcher.find()) {
+			throw new BadArgsException("Username cannot have spaces");
+		}
 		
 		String salt = UUID.randomUUID().toString();
 		String passwordHash = hash(password + salt);
