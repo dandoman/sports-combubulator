@@ -66,4 +66,8 @@ public class UserLogic {
 			throw new RuntimeException("Encoding error", e);
 		}
 	}
+
+	public UserDTO getUserByVisitorId(String visitorId) {
+		return userDao.getUserByVisitorId(visitorId);
+	}
 }

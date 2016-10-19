@@ -1,6 +1,8 @@
 package com.merccann.dao;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.merccann.dao.mapper.VisitorDataMapper;
@@ -30,7 +32,7 @@ public class VisitorDao extends Dao {
 		
 	}
 	
-	public VisitorDTO getVisitorByIpAddress(String ipAddress) {
-		return getSingleResultById(dataMapper.getVisitorByIp(ipAddress), ipAddress);
+	public List<VisitorDTO> getVisitorsByIpAddress(String ipAddress) {
+		return getAsList(dataMapper.getVisitorByIp(ipAddress));
 	}
 }	
