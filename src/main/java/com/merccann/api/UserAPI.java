@@ -9,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.merccann.dto.MatchAndPredictionDTO;
 import com.merccann.dto.VisitorDTO;
 import com.merccann.logic.MatchLogic;
-import com.merccann.logic.PredictionLogic;
 import com.merccann.logic.UserLogic;
 import com.merccann.logic.VisitorVerificationLogic;
 import com.merccann.request.CreateUserRequest;
@@ -59,7 +57,7 @@ public class UserAPI {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional
-	public void createUser(CreateUserRequest r, @CookieValue(value = "visitor-id", required = true) String visitorId) {
+	public void createUser(@RequestBody CreateUserRequest r, @CookieValue(value = "visitor-id", required = true) String visitorId) {
 		userLogic.createUser(r.getUsername(), r.getPassword(), visitorId, r.getEmailAddress());
 	}
 }

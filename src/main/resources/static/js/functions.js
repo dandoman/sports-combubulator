@@ -5,9 +5,9 @@ function goToURL(url) {
 function createUser() {
 	var dialog, form,
  
-    username = $( "#username" ),
-    email = $( "#email" ),
-    password = $( "#password" ),
+    username = $("#username"),
+    email = $("#email"),
+    password = $("#password"),
  	allFields = $( [] ).add( username ).add( email ).add( password ),
  	tips = $( ".validateTips" );
  	
@@ -22,12 +22,12 @@ function createUser() {
     
     function addUser() {
     	$.ajax({
-    	url: '/api/admin/match/score',
+    	url: '/api/user',
     	type: 'post',
     	data: JSON.stringify({
-        	matchId: matchId,
-        	finalAwayScore: awayScoreInt,
-        	finalHomeScore: homeScoreInt
+        	username: username.val(),
+        	password: password.val(),
+        	emailAddress: email.val()
     	}),
     	contentType: 'application/json',
     	success: function (data) {
